@@ -1,16 +1,35 @@
 package infra
 
 import (
-	"time"
+	"database/sql"
+	"log"
 
 	domain "github.com/hokita/milk/domain/entity"
 )
 
-type LogRepository struct{}
+type LogRepository struct {
+	DB *sql.DB
+}
 
 func (r *LogRepository) Get() *domain.Log {
-	return &domain.Log{
-		LogType: domain.Milk,
-		Date:    time.Date(2023, 8, 18, 18, 37, 0, 0, time.Local),
+	rows, err := r.DB.Query("SELECT * FROM logs;")
+	if err != nil {
+		log.Fatalf("getRows db.Query error err:%v", err)
 	}
+	defer rows.Close()
+
+	l := &domain.Log{}
+	for rows.Next() {
+		if err := rows.Scan(
+			&l.ID,
+			&l.LogType,
+			&l.CheckinAt,
+			&l.CreatedAt,
+			&l.UpdatedAt,
+		); err != nil {
+			log.Fatalf("getRows rows.Scan error err:%v", err)
+		}
+	}
+
+	return l
 }

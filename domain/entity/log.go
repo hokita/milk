@@ -11,6 +11,9 @@ const (
 )
 
 type Log struct {
-	LogType LogType
-	Date    time.Time
+	ID        string
+	LogType   LogType
+	CheckinAt time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

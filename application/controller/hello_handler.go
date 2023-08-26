@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	_ "github.com/go-sql-driver/mysql"
 	infra "github.com/hokita/milk/infra/repository"
 )
 
